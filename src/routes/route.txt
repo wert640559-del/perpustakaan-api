@@ -1,0 +1,1106 @@
+
+
+--- FILE: ./transaction.route.ts ---
+
+import { Router } from "express";
+import { 
+    borrowValidation, 
+    returnValidation, 
+    getByIdValidation, 
+    getAllValidation 
+} from "../middlewares/transaction.validation";
+import { TransactionController } from "../controllers/transaction.controller";
+import { validate } from "../utils/validator";
+import { authenticate } from "../middlewares/auth.middleware";
+import { TransactionRepository } from "../repositories/transaction.repository";
+import { BookRepository } from "../repositories/book.repository";
+import prismaInstance from "../prisma";
+import { TransactionService } from "../services/transaction.service";
+
+const router = Router();
+/**
+ * @swagger
+ * tags:
+ *   name: Transactions
+ *   description: Manajemen peminjaman dan pengembalian buku
+ */
+
+
+/**
+ * @swagger
+ * /transactions:
+ *   get:
+ *     summary: Mendapatkan daftar semua transaksi
+ *     tags: [Transactions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: memberId
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [BORROWED, RETURNED, OVERDUE, CANCELLED]
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil daftar transaksi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transactions:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Transaction'
+ *                     total:
+ *                       type: integer
+ */
+
+
+/**
+ * @swagger
+ * /transactions/stats:
+ *   get:
+ *     summary: Mendapatkan statistik transaksi
+ *     tags: [Transactions]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistik berhasil diambil
+ */
+
+
+/**
+ * @swagger
+ * /transactions:
+ *   post:
+ *     summary: Membuat peminjaman buku baru
+ *     tags: [Transactions]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - memberId
+ *               - books
+ *               - dueDate
+ *             properties:
+ *               memberId:
+ *                 type: string
+ *               dueDate:
+ *                 type: string
+ *                 format: date
+ *                 example: "2025-12-31"
+ *               books:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     bookId:
+ *                       type: string
+ *                     quantity:
+ *                       type: integer
+ *     responses:
+ *       201:
+ *         description: Peminjaman berhasil dicatat
+ */
+
+
+/**
+ * @swagger
+ * /transactions/{id}:
+ *   get:
+ *     summary: Detail transaksi berdasarkan ID
+ *     tags: [Transactions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Data ditemukan
+ */
+
+
+/**
+ * @swagger
+ * /transactions/return/{id}:
+ *   patch:
+ *     summary: Proses pengembalian buku
+ *     tags: [Transactions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Buku berhasil dikembalikan
+ */
+
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Transaction:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         memberId:
+ *           type: string
+ *         status:
+ *           type: string
+ *         dueDate:
+ *           type: string
+ *           format: date-time
+ *         returnDate:
+ *           type: string
+ *           format: date-time
+ * */
+
+// --- Inisialisasi Layer ---
+const transactionRepo = new TransactionRepository(prismaInstance);
+const bookRepo = new BookRepository(prismaInstance);
+const service = new TransactionService(transactionRepo, bookRepo);
+const controller = new TransactionController(service);
+
+// --- Route Definitions ---
+router.get('/', authenticate, validate(getAllValidation), controller.list);
+router.get('/stats', authenticate, controller.getStats);
+router.get('/:id', authenticate, validate(getByIdValidation), controller.getById);
+router.post('/', authenticate, validate(borrowValidation), controller.create);
+router.patch('/return/:id', authenticate, validate(returnValidation), controller.returnBooks);
+
+export default router;
+
+--- FILE: ./auth.route.ts ---
+
+import { Router } from "express";
+import { AuthController } from "../controllers/user.controller";
+import { AuthService } from "../services/user.service";
+import { UserRepository } from "../repositories/user.repository";
+import { loginValidation, registerValidation } from "../middlewares/auth.validation";
+import { validate } from "../utils/validator";  // Import validate yang benar
+import { authenticate } from "../middlewares/auth.middleware";
+import prismaInstance from "../prisma";
+
+const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Operasi autentikasi pengguna (Login, Register, Profile)
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Registrasi pengguna baru
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *               - name
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: harits
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: harits@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: rahasia123
+ *               name:
+ *                 type: string
+ *                 example: Muhammad Harits
+ *               role:
+ *                 type: string
+ *                 enum: [ADMIN, LIBRARIAN, MEMBER]
+ *                 example: MEMBER
+ *     responses:
+ *       201:
+ *         description: Berhasil registrasi
+ */
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login untuk mendapatkan token JWT
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: harits
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: harits@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: rahasia123
+ *     responses:
+ *       200:
+ *         description: Login berhasil
+ */
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Mendapatkan profil user yang sedang login
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Data profil berhasil diambil
+ */
+
+// Inisialisasi Layer (SAMA PERSIS dengan product API)
+const repo = new UserRepository(prismaInstance);
+const service = new AuthService(repo);
+const controller = new AuthController(service);
+
+// Endpoints (Pola sama dengan product API)
+router.post("/register", validate(registerValidation), (req, res) => controller.register(req, res));
+router.post("/login", validate(loginValidation), (req, res) => controller.login(req, res));
+router.get("/me", authenticate, (req, res) => controller.me(req, res));
+
+export default router;
+
+--- FILE: ./author.route.ts ---
+
+import { Router } from "express";
+import { AuthorController } from "../controllers/author.controller";
+import { AuthorService } from "../services/author.service";
+import { AuthorRepository } from "../repositories/author.repository";
+// Memperbaiki import agar sesuai dengan member yang di-export di author.validation.ts
+import { 
+    createAuthorValidation, 
+    updateAuthorValidation, 
+    getAuthorByIdValidation, 
+    searchAuthorValidation 
+} from "../middlewares/author.validation";
+import { validate } from "../utils/validator";
+import { authenticate } from "../middlewares/auth.middleware";
+import prismaInstance from "../prisma";
+
+const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Authors
+ *   description: Manajemen data penulis buku
+ */
+
+/**
+ * @swagger
+ * /authors:
+ *   get:
+ *     summary: Mendapatkan daftar semua penulis
+ *     tags: [Authors]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Cari berdasarkan nama penulis
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil daftar penulis
+ */
+
+/**
+ * @swagger
+ * /authors/stats:
+ *   get:
+ *     summary: Mendapatkan statistik penulis terproduktif
+ *     tags: [Authors]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistik berhasil diambil
+ */
+
+/**
+ * @swagger
+ * /authors:
+ *   post:
+ *     summary: Menambahkan penulis baru
+ *     tags: [Authors]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - birthDate
+ *             properties:
+ *               name:
+ *                 type: string
+ *               bio:
+ *                 type: string
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *                 example: "1990-01-01"
+ *     responses:
+ *       201:
+ *         description: Penulis berhasil ditambahkan
+ */
+
+/**
+ * @swagger
+ * /authors/{id}:
+ *   get:
+ *     summary: Detail penulis beserta daftar bukunya
+ *     tags: [Authors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Data penulis ditemukan
+ *   put:
+ *     summary: Update data penulis
+ *     tags: [Authors]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               bio:
+ *                 type: string
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Update berhasil
+ *   delete:
+ *     summary: Hapus data penulis
+ *     tags: [Authors]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Penulis berhasil dihapus
+ *       400:
+ *         description: Gagal karena penulis masih memiliki buku aktif
+ * */
+
+// --- Inisialisasi Layer (Dependency Injection) ---
+const repo = new AuthorRepository(prismaInstance);
+const service = new AuthorService(repo);
+const controller = new AuthorController(service);
+
+// --- ROUTE URUTAN PENTING: STATS DULU, BARU :id ---
+
+// 1. Route stats HARUS SEBELUM route :id
+router.get("/stats", authenticate, (req, res) => controller.getStats(req, res));
+
+// 2. Collection routes (tanpa ID)
+router.get("/", 
+    validate(searchAuthorValidation), 
+    (req, res) => controller.list(req, res)
+);
+
+router.post("/", 
+    authenticate, 
+    validate(createAuthorValidation), 
+    (req, res) => controller.create(req, res)
+);
+
+// 3. Member routes (dengan ID) - HARUS DI BAWAH
+router.get("/:id", 
+    validate(getAuthorByIdValidation), 
+    (req, res) => controller.getById(req, res)
+);
+
+router.put("/:id", 
+    authenticate, 
+    validate(updateAuthorValidation), 
+    (req, res) => controller.update(req, res)
+);
+
+router.delete("/:id", 
+    authenticate, 
+    validate(getAuthorByIdValidation), 
+    (req, res) => controller.remove(req, res)
+);
+
+export default router;
+
+--- FILE: ./book.route.ts ---
+
+import { Router } from "express";
+import { BookController } from "../controllers/book.controller";
+import { BookService } from "../services/book.service";
+import { BookRepository } from "../repositories/book.repository";
+import { 
+    createBookValidation, 
+    updateBookValidation, 
+    getBookByIdValidation, 
+    searchBookValidation 
+} from "../middlewares/book.validation";
+import { validate } from "../utils/validator";
+import { authenticate } from "../middlewares/auth.middleware";
+import { upload } from "../middlewares/upload.middleware";
+import prismaInstance from "../prisma";
+
+const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Books
+ *   description: Manajemen data buku dan koleksi perpustakaan
+ */
+
+/**
+ * @swagger
+ * /books:
+ *   get:
+ *     summary: Mendapatkan daftar semua buku (dengan pagination & filter)
+ *     tags: [Books]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: authorId
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: categoryId
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil daftar buku
+ */
+/**
+ * @swagger
+ * /books/stats:
+ *   get:
+ *     summary: Mendapatkan statistik dashboard buku
+ *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistik berhasil diambil
+ */
+/**
+ * @swagger
+ * /books:
+ *   post:
+ *     summary: Membuat buku baru (dengan upload cover)
+ *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - isbn
+ *               - year
+ *               - stock
+ *               - authorId
+ *               - categoryId
+ *               - coverImage
+ *             properties:
+ *               title:
+ *                 type: string
+ *               isbn:
+ *                 type: string
+ *               year:
+ *                 type: integer
+ *               stock:
+ *                 type: integer
+ *               authorId:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               coverImage:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       201:
+ *         description: Buku berhasil ditambahkan
+ */
+/**
+ * @swagger
+ * /books/{id}:
+ *   get:
+ *     summary: Detail buku berdasarkan ID
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Data buku ditemukan
+ *   put:
+ *     summary: Update data buku
+ *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               isbn:
+ *                 type: string
+ *               year:
+ *                 type: integer
+ *               stock:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Update berhasil
+ *   delete:
+ *     summary: Hapus buku (Soft Delete)
+ *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Buku berhasil dihapus
+ * */
+
+// --- Dependency Injection ---
+const repo = new BookRepository(prismaInstance);
+const service = new BookService(repo);
+const controller = new BookController(service);
+
+// --- Routes Definition ---
+
+// 1. Stats diletakkan paling atas agar tidak bertabrakan dengan /:id
+router.get("/stats", authenticate, controller.getStats);
+
+// 2. Collection routes
+router.get("/", searchBookValidation, validate, controller.list);
+router.post(
+    "/", 
+    authenticate, 
+    upload.single('coverImage'), 
+    createBookValidation, 
+    validate, 
+    controller.create
+);
+
+// 3. Member routes (menggunakan :id)
+router.get("/:id", getBookByIdValidation, validate, controller.getById);
+router.put("/:id", authenticate, updateBookValidation, validate, controller.update);
+router.delete("/:id", authenticate, getBookByIdValidation, validate, controller.remove);
+
+export default router;
+
+--- FILE: ./category.route.ts ---
+
+import { Router } from "express";
+import { CategoryController } from "../controllers/category.controller";
+import { CategoryService } from "../services/category.service";
+import { CategoryRepository } from "../repositories/category.repository";
+import { validate } from "../utils/validator";
+import { authenticate } from "../middlewares/auth.middleware";
+import prismaInstance from "../prisma";
+
+const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Categories
+ *   description: Manajemen kategori buku
+ */
+
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     summary: Mendapatkan daftar semua kategori
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *           description: Cari berdasarkan nama kategori
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil daftar kategori
+ */
+
+/**
+ * @swagger
+ * /categories/stats:
+ *   get:
+ *     summary: Mendapatkan statistik buku per kategori
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistik berhasil diambil
+ */
+
+/**
+ * @swagger
+ * /categories:
+ *   post:
+ *     summary: Membuat kategori baru
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Kategori berhasil dibuat
+ */
+
+/**
+ * @swagger
+ * /categories/{id}:
+ *   get:
+ *     summary: Detail kategori berdasarkan ID
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Data kategori ditemukan
+ *   put:
+ *     summary: Update data kategori
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Update kategori berhasil
+ *   delete:
+ *     summary: Hapus kategori
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Kategori berhasil dihapus
+ *       400:
+ *         description: Gagal menghapus karena kategori masih memiliki buku
+ * */
+
+// --- Inisialisasi Layer (DI) ---
+const repo = new CategoryRepository(prismaInstance);
+const service = new CategoryService(repo);
+const controller = new CategoryController(service);
+
+// --- Route Definitions ---
+
+// Route stats diletakkan sebelum :id
+router.get("/stats", authenticate, controller.getStats);
+
+router.get("/", controller.list);
+router.post("/", authenticate, validate, controller.create);
+
+router.get("/:id", controller.getById);
+router.put("/:id", authenticate, validate, controller.update);
+router.delete("/:id", authenticate, controller.remove);
+
+export default router;
+
+--- FILE: ./member.route.ts ---
+
+import { Router } from "express";
+import { 
+    createMemberValidation, 
+    getMemberByIdValidation,
+    validate
+} from "../middlewares/member.validation";
+import { MemberController } from "../controllers/member.controller";
+import { authenticate } from "../middlewares/auth.middleware";
+import { MemberRepository } from "../repositories/member.repository";
+import prismaInstance from "../prisma";
+import { MemberService } from "../services/member.service";
+
+const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Members
+ *   description: Manajemen data anggota perpustakaan
+ */
+
+/**
+ * @swagger
+ * /members:
+ *   get:
+ *     summary: Mendapatkan daftar semua member
+ *     tags: [Members]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: nama
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: email
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [ACTIVE, INACTIVE, SUSPENDED]
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil daftar member
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     members:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Member'
+ *                     total:
+ *                       type: integer
+ */
+
+/**
+ * @swagger
+ * /members/stats:
+ *   get:
+ *     summary: Mendapatkan statistik status member
+ *     tags: [Members]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistik berhasil diambil
+ */
+
+/**
+ * @swagger
+ * /members:
+ *   post:
+ *     summary: Membuat member baru
+ *     tags: [Members]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nama
+ *               - email
+ *               - telepon
+ *             properties:
+ *               nama:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               telepon:
+ *                 type: string
+ *               alamat:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Member berhasil ditambahkan
+ */
+
+/**
+ * @swagger
+ * /members/{id}:
+ *   get:
+ *     summary: Detail member berdasarkan ID
+ *     tags: [Members]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Data member ditemukan
+ */
+
+/**
+ * @swagger
+ * /members/{id}:
+ *   delete:
+ *     summary: Hapus member (Soft Delete)
+ *     tags: [Members]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Member berhasil dinonaktifkan
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Member:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         kodeMember:
+ *           type: string
+ *         nama:
+ *           type: string
+ *         email:
+ *           type: string
+ *         status:
+ *           type: string
+ * */
+
+// --- Inisialisasi Layer ---
+const repo = new MemberRepository(prismaInstance);
+const service = new MemberService(repo);
+const controller = new MemberController(service);
+
+// --- Route Definitions ---
+router.get('/', authenticate, controller.list);
+router.get('/stats', authenticate, controller.getStats); // Stats di atas rute :id
+router.get('/:id', authenticate, validate(getMemberByIdValidation), controller.getById);
+router.post('/', authenticate, validate(createMemberValidation), controller.create);
+router.put('/:id', authenticate, validate(getMemberByIdValidation), controller.update);
+router.delete('/:id', authenticate, validate(getMemberByIdValidation), controller.remove);
+
+export default router;
+
+--- FILE: ./route.txt ---
+

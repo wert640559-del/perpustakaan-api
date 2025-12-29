@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Book {
+  id           String            @id @default(uuid())
+  title        String
+  isbn         String            @unique
+  description  String?
+  year         Int
+  stock        Int               @default(0)
+  coverImage   String?
+
+  authorId     String
+  author       Author            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  categoryId   String
+  category     Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  items        TransactionItem[]
+
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  deletedAt    DateTime?
+
+  @@map("books")
+}
+
+model Author {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  bio       String?
+  birthDate DateTime
+
+  books     Book[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("authors")
+}
+
+// Tambahkan model User di bawah Author
+model User {
+  id        String    @id @default(uuid())
+  username  String    @unique
+  name      String
+  email     String    @unique
+  password  String
+  role      UserRole  @default(MEMBER)
+
+  member    Member[]
+  
+  // Hapus relation ke transactions jika tidak ada model Transaction
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  @@map("users")
+}
+
+model Member {
+  id              String    @id @default(uuid())
+  kodeMember      String    @unique
+  nama            String
+  email           String    @unique
+  telepon         String
+  alamat          String?
+  tanggal_daftar  DateTime  @default(now())
+  status          MemberStatus  @default(ACTIVE)
+
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id])
+  
+  transactions    Transaction[] // Relation ke transactions jika ada
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("members")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  description String
+
+
+  books     Book[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Transaction {
+  id         String              @id @default(uuid())
+
+  memberId   String
+  member     Member              @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  items      TransactionItem[]
+
+  borrowDate DateTime            @default(now())
+  dueDate    DateTime
+  returnDate DateTime?
+  status     TransactionStatus   @default(BORROWED)
+
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@map("transactions")
+}
+
+model TransactionItem {
+  id             String        @id @default(uuid())
+
+  transactionId  String
+  transaction    Transaction  @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  bookId         String
+  book           Book         @relation(fields: [bookId], references: [id])
+
+  quantity       Int           @default(1)
+
+  @@index([transactionId])
+  @@index([bookId])
+  @@map("transaction_items")
+}
+
+// ENUMS
+enum UserRole {
+  ADMIN      // Super admin
+  LIBRARIAN  // Pustakawan
+  MEMBER     // Anggota yang bisa login
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum TransactionStatus {
+  BORROWED
+  RETURNED
+  OVERDUE
+  CANCELLED
+}
+
