@@ -5,7 +5,7 @@ import { UserRepository } from "../repositories/user.repository";
 import { loginValidation, registerValidation } from "../middlewares/auth.validation";
 import { validate } from "../utils/validator";
 import { authenticate } from "../middlewares/auth.middleware";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 const router = Router();
 /**
  * @swagger

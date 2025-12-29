@@ -4,7 +4,7 @@ import { CategoryService } from "../services/category.service";
 import { CategoryRepository } from "../repositories/category.repository";
 import { validate } from "../utils/validator";
 import { authenticate } from "../middlewares/auth.middleware";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 const router = Router();
 /**
  * @swagger

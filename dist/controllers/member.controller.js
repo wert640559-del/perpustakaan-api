@@ -5,7 +5,7 @@ export class MemberController {
         this.memberService = memberService;
         this.list = this.list.bind(this);
         this.getById = this.getById.bind(this);
-        this.getByUserId = this.getByUserId.bind(this);
+        // this.getByUserId = this.getByUserId.bind(this);
         this.create = this.create.bind(this);
         this.update = this.update.bind(this);
         this.remove = this.remove.bind(this);
@@ -39,19 +39,34 @@ export class MemberController {
         successResponse(res, "Daftar member berhasil diambil", result.members, pagination);
     }
     async getById(req, res) {
-        if (!req.params.id)
-            throw new Error("ID member diperlukan");
-        const member = await this.memberService.getById(req.params.id);
-        successResponse(res, "Data member berhasil diambil", member);
+        try {
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ success: false, message: "ID member diperlukan" });
+                return;
+            }
+            const member = await this.memberService.getById(id);
+            successResponse(res, "Data member berhasil diambil", member);
+        }
+        catch (error) {
+            res.status(404).json({ success: false, message: error.message });
+        }
     }
-    async getByUserId(req, res) {
-        const userId = req.params.userId;
-        if (!userId)
-            throw new Error("User ID tidak valid");
-        // Catatan: Pastikan di member.repository kamu ada method findByUserId
-        const member = await this.memberService.getById(userId);
-        successResponse(res, "Profil member berdasarkan user berhasil diambil", member);
-    }
+    // async getByUserId(req: Request, res: Response): Promise<void> {
+    //     try {
+    //         const { userId } = req.params;
+    //         if (!userId) {
+    //             res.status(400).json({ success: false, message: "User ID diperlukan" });
+    //             return; // Berhenti di sini, tapi tidak mengembalikan nilai (tetap void)
+    //         }
+    //         const member = await this.memberService.getByUserId(userId); 
+    //         // Panggil successResponse tanpa kata kunci 'return'
+    //         successResponse(res, "Profil member berhasil diambil", member);
+    //     } catch (error: any) {
+    //         res.status(404).json({ success: false, message: error.message });
+    //         // Tidak perlu return di sini karena sudah akhir dari blok fungsi
+    //     }
+    // }
     async create(req, res) {
         const { kodeMember, nama, email, telepon, alamat, userId } = req.body;
         if (!kodeMember || !nama || !email)

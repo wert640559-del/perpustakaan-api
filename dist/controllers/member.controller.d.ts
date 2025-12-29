@@ -3,7 +3,6 @@ import type { IMemberService } from "../services/member.service";
 export interface IMemberController {
     list(req: Request, res: Response): Promise<void>;
     getById(req: Request, res: Response): Promise<void>;
-    getByUserId(req: Request, res: Response): Promise<void>;
     create(req: Request, res: Response): Promise<void>;
     update(req: Request, res: Response): Promise<void>;
     remove(req: Request, res: Response): Promise<void>;
@@ -14,7 +13,6 @@ export declare class MemberController implements IMemberController {
     constructor(memberService: IMemberService);
     list(req: Request, res: Response): Promise<void>;
     getById(req: Request, res: Response): Promise<void>;
-    getByUserId(req: Request, res: Response): Promise<void>;
     create(req: Request, res: Response): Promise<void>;
     update(req: Request, res: Response): Promise<void>;
     remove(req: Request, res: Response): Promise<void>;

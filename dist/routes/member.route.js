@@ -3,7 +3,7 @@ import { createMemberValidation, getMemberByIdValidation, validate } from "../mi
 import { MemberController } from "../controllers/member.controller";
 import { authenticate } from "../middlewares/auth.middleware";
 import { MemberRepository } from "../repositories/member.repository";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 import { MemberService } from "../services/member.service";
 const router = Router();
 /**

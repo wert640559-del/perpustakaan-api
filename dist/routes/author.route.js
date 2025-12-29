@@ -5,7 +5,7 @@ import { AuthorRepository } from "../repositories/author.repository";
 import { createAuthorValidation, updateAuthorValidation, getAuthorByIdValidation, searchAuthorValidation } from "../middlewares/author.validation";
 import { validate } from "../utils/validator";
 import { authenticate } from "../middlewares/auth.middleware";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 const router = Router();
 /**
  * @swagger
