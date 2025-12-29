@@ -9,7 +9,7 @@
     "seed": "tsx src/prisma/seeder.ts",
     "dev": "tsx watch  --env-file=.env.development src/index.ts",
     "start": "node --env-file=.env.production dist/index.js ",
-    "build": "prisma generate && tsc && cp -rf src/generated /dist && ts-add-js-extension --dir=dist",
+    "build": "prisma generate && tsc && cp -rf src/generated dist && ts-add-js-extension --dir=dist",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
