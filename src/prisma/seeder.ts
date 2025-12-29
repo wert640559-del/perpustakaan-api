@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
-import { getPrisma } from '../prisma';
+import { getPrisma } from '../database';
 import fs from 'fs';
 import path from 'path';
 

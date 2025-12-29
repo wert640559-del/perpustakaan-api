@@ -10,7 +10,7 @@ import { validate } from "../utils/validator";
 import { authenticate } from "../middlewares/auth.middleware";
 import { TransactionRepository } from "../repositories/transaction.repository";
 import { BookRepository } from "../repositories/book.repository";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 import { TransactionService } from "../services/transaction.service";
 
 const router = Router();

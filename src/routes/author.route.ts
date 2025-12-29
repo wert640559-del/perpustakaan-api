@@ -10,7 +10,7 @@ import {
 } from "../middlewares/author.validation";
 import { validate } from "../utils/validator";
 import { authenticate } from "../middlewares/auth.middleware";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 
 const router = Router();
 

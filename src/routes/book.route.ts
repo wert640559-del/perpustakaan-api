@@ -11,7 +11,7 @@ import {
 import { validate } from "../utils/validator";
 import { authenticate } from "../middlewares/auth.middleware";
 import { upload } from "../middlewares/upload.middleware";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 
 const router = Router();
 

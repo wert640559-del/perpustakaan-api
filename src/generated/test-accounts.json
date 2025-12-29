@@ -1,0 +1,88 @@
+{
+  "credentials": {
+    "admin": [
+      {
+        "email": "admin1@library.com",
+        "password": "admin123",
+        "username": "admin1"
+      },
+      {
+        "email": "admin2@library.com",
+        "password": "admin123",
+        "username": "admin2"
+      }
+    ],
+    "librarian": [
+      {
+        "email": "librarian1@library.com",
+        "password": "librarian123",
+        "username": "librarian1"
+      },
+      {
+        "email": "librarian2@library.com",
+        "password": "librarian123",
+        "username": "librarian2"
+      },
+      {
+        "email": "librarian3@library.com",
+        "password": "librarian123",
+        "username": "librarian3"
+      }
+    ],
+    "member": [
+      {
+        "email": "member1@library.com",
+        "password": "member123",
+        "username": "member1"
+      },
+      {
+        "email": "member2@library.com",
+        "password": "member123",
+        "username": "member2"
+      },
+      {
+        "email": "member3@library.com",
+        "password": "member123",
+        "username": "member3"
+      },
+      {
+        "email": "member4@library.com",
+        "password": "member123",
+        "username": "member4"
+      },
+      {
+        "email": "member5@library.com",
+        "password": "member123",
+        "username": "member5"
+      }
+    ]
+  },
+  "stats": {
+    "users": 25,
+    "books": 50,
+    "authors": 15,
+    "categories": 8,
+    "members": 20,
+    "transactions": 33
+  },
+  "sampleBooks": [
+    {
+      "title": "Laskar Pelangi",
+      "isbn": "9789793062792",
+      "year": 2005,
+      "stock": 11
+    },
+    {
+      "title": "Bumi Manusia",
+      "isbn": "9789794166948",
+      "year": 1980,
+      "stock": 9
+    },
+    {
+      "title": "Harry Potter dan Batu Bertuah",
+      "isbn": "9786020382958",
+      "year": 2000,
+      "stock": 19
+    }
+  ]
+}
