@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
-import { errorResponse } from '../utils/response';
-import config from "../utils/env";
+import jwt from "jsonwebtoken";
+import { errorResponse } from "../utils/response.js";
+import config from "../utils/env.js";
 export const authenticate = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return errorResponse(res, "Token tidak ditemukan", 401);
     }
     const token = authHeader.split(" ")[1];

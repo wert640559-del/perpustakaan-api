@@ -1,5 +1,5 @@
-import type { Category, Prisma, Book } from "../generated/client";
-import type { ICategoryRepository } from "../repositories/category.repository";
+import type { Category, Prisma, Book } from "../generated/client.js";
+import type { ICategoryRepository } from "../repositories/category.repository.js";
 interface FindAllCategoriesParams {
     page: number;
     limit: number;
@@ -7,7 +7,7 @@ interface FindAllCategoriesParams {
         name?: string;
     };
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 interface CategoryListResponse {
     categories: Category[];

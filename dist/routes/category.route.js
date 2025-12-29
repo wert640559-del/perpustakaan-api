@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { CategoryController } from "../controllers/category.controller";
-import { CategoryService } from "../services/category.service";
-import { CategoryRepository } from "../repositories/category.repository";
-import { validate } from "../utils/validator";
-import { authenticate } from "../middlewares/auth.middleware";
-import prismaInstance from "../database";
+import { CategoryController } from "../controllers/category.controller.js";
+import { CategoryService } from "../services/category.service.js";
+import { CategoryRepository } from "../repositories/category.repository.js";
+import { validate } from "../utils/validator.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import prismaInstance from "../database.js";
 const router = Router();
 /**
  * @swagger

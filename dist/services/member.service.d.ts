@@ -1,5 +1,5 @@
-import type { Member, Prisma, User } from "../generated/client";
-import type { IMemberRepository } from "../repositories/member.repository";
+import type { Member, Prisma, User } from "../generated/client.js";
+import type { IMemberRepository } from "../repositories/member.repository.js";
 interface FindAllMembersParams {
     page: number;
     limit: number;
@@ -9,7 +9,7 @@ interface FindAllMembersParams {
         status?: "ACTIVE" | "INACTIVE" | "SUSPENDED";
     };
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 interface MemberListResponse {
     members: Member[];
@@ -38,7 +38,7 @@ export declare class MemberService implements IMemberService {
     update(id: string, data: Prisma.MemberUpdateInput): Promise<Member>;
     delete(id: string): Promise<Member>;
     getStats(): Promise<{
-        status: import("../generated/enums").MemberStatus;
+        status: import("../generated/enums.js").MemberStatus;
         count: number;
     }[]>;
 }

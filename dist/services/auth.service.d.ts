@@ -17,7 +17,7 @@ export declare const getProfile: (userId: string) => Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("../generated/enums").MemberStatus;
+        status: import("../generated/enums.js").MemberStatus;
         email: string;
         kodeMember: string;
         nama: string;

@@ -1,4 +1,4 @@
-import type { Author, Prisma, PrismaClient, Book } from "../generated/client";
+import type { Author, Prisma, PrismaClient, Book } from "../generated/client.js";
 export interface IAuthorRepository {
     list(skip: number, limit: number, where: Prisma.AuthorWhereInput, orderBy: Prisma.AuthorOrderByWithRelationInput): Promise<Author[]>;
     countAll(where: Prisma.AuthorWhereInput): Promise<number>;

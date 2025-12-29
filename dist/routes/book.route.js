@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { BookController } from "../controllers/book.controller";
-import { BookService } from "../services/book.service";
-import { BookRepository } from "../repositories/book.repository";
-import { createBookValidation, updateBookValidation, getBookByIdValidation, searchBookValidation } from "../middlewares/book.validation";
-import { validate } from "../utils/validator";
-import { authenticate } from "../middlewares/auth.middleware";
-import { upload } from "../middlewares/upload.middleware";
-import prismaInstance from "../database";
+import { BookController } from "../controllers/book.controller.js";
+import { BookService } from "../services/book.service.js";
+import { BookRepository } from "../repositories/book.repository.js";
+import { createBookValidation, updateBookValidation, getBookByIdValidation, searchBookValidation } from "../middlewares/book.validation.js";
+import { validate } from "../utils/validator.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/upload.middleware.js";
+import prismaInstance from "../database.js";
 const router = Router();
 /**
  * @swagger
@@ -392,10 +392,10 @@ const controller = new BookController(service);
 router.get("/stats", authenticate, controller.getStats);
 // 2. Collection routes
 router.get("/", validate(searchBookValidation), controller.list);
-router.post("/", authenticate, upload.single('coverImage'), validate(createBookValidation), controller.create);
+router.post("/", authenticate, upload.single("coverImage"), validate(createBookValidation), controller.create);
 // 3. Member routes (menggunakan :id)
 router.get("/:id", validate(getBookByIdValidation), controller.getById);
-router.put("/:id", authenticate, validate(updateBookValidation), upload.single('coverImage'), controller.update);
+router.put("/:id", authenticate, validate(updateBookValidation), upload.single("coverImage"), controller.update);
 router.delete("/:id", authenticate, validate(getBookByIdValidation), controller.remove);
 export default router;
 //# sourceMappingURL=book.route.js.map

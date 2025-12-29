@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ITransactionService } from "../services/transaction.service";
+import type { ITransactionService } from "../services/transaction.service.js";
 export interface ITransactionController {
     list(req: Request, res: Response): Promise<void>;
     getById(req: Request, res: Response): Promise<void>;

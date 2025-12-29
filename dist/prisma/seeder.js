@@ -1,8 +1,8 @@
-import { faker } from '@faker-js/faker';
-import bcrypt from 'bcrypt';
-import { getPrisma } from '../database';
-import fs from 'fs';
-import path from 'path';
+import { faker } from "@faker-js/faker";
+import bcrypt from "bcrypt";
+import { getPrisma } from "../database.js";
+import fs from "fs";
+import path from "path";
 const prisma = getPrisma();
 // Config
 const NUM_ADMINS = 2;
@@ -14,9 +14,9 @@ const NUM_BOOKS = 50;
 const NUM_TRANSACTIONS = 30;
 // Fixed credentials for testing
 const TEST_CREDENTIALS = {
-    ADMIN: { password: 'admin123' },
-    LIBRARIAN: { password: 'librarian123' },
-    MEMBER: { password: 'member123' }
+    ADMIN: { password: "admin123" },
+    LIBRARIAN: { password: "librarian123" },
+    MEMBER: { password: "member123" }
 };
 async function findOrCreateAuthor(name, bio, birthDate) {
     const existingAuthor = await prisma.author.findFirst({
@@ -30,10 +30,10 @@ async function findOrCreateAuthor(name, bio, birthDate) {
     });
 }
 async function seedData() {
-    console.log('🚀 Starting database seeding...');
-    console.log('='.repeat(50));
+    console.log("\uD83D\uDE80 Starting database seeding...");
+    console.log("=".repeat(50));
     // Clear existing data
-    console.log('🧹 Clearing existing data...');
+    console.log("\uD83E\uDDF9 Clearing existing data...");
     await prisma.transactionItem.deleteMany();
     await prisma.transaction.deleteMany();
     await prisma.book.deleteMany();
@@ -55,7 +55,7 @@ async function seedData() {
     // ======================
     // 1. SEED USERS
     // ======================
-    console.log('\n👥 Seeding users...');
+    console.log("\n\uD83D\uDC65 Seeding users...");
     // Admin Users (fixed emails for easy testing)
     for (let i = 1; i <= NUM_ADMINS; i++) {
         const email = `admin${i}@library.com`;
@@ -66,7 +66,7 @@ async function seedData() {
                 email,
                 password,
                 name: `Admin ${i}`,
-                role: 'ADMIN',
+                role: "ADMIN",
             },
         });
         createdData.admins.push(admin);
@@ -83,7 +83,7 @@ async function seedData() {
                 email,
                 password,
                 name: `Petugas Perpustakaan ${i}`,
-                role: 'LIBRARIAN',
+                role: "LIBRARIAN",
             },
         });
         createdData.librarians.push(librarian);
@@ -106,17 +106,17 @@ async function seedData() {
                 email,
                 password,
                 name,
-                role: 'MEMBER',
+                role: "MEMBER",
             },
         });
         const member = await prisma.member.create({
             data: {
-                kodeMember: `MEM${String(i).padStart(4, '0')}`,
+                kodeMember: `MEM${String(i).padStart(4, "0")}`,
                 nama: name,
                 email,
                 telepon: faker.helpers.fromRegExp(/08[0-9]{10}/),
                 alamat: faker.location.streetAddress(),
-                status: faker.helpers.arrayElement(['ACTIVE', 'ACTIVE', 'ACTIVE', 'INACTIVE']),
+                status: faker.helpers.arrayElement(["ACTIVE", "ACTIVE", "ACTIVE", "INACTIVE"]),
                 userId: user.id,
             },
         });
@@ -130,10 +130,16 @@ async function seedData() {
     // ======================
     // 2. SEED CATEGORIES
     // ======================
-    console.log('\n📂 Seeding categories...');
+    console.log("\n\uD83D\uDCC2 Seeding categories...");
     const categoryNames = [
-        'Fiksi', 'Non-Fiksi', 'Pendidikan', 'Teknologi',
-        'Sastra', 'Sejarah', 'Bisnis', 'Psikologi'
+        "Fiksi",
+        "Non-Fiksi",
+        "Pendidikan",
+        "Teknologi",
+        "Sastra",
+        "Sejarah",
+        "Bisnis",
+        "Psikologi"
     ];
     for (let i = 0; i < NUM_CATEGORIES; i++) {
         const category = await prisma.category.create({
@@ -148,14 +154,14 @@ async function seedData() {
     // ======================
     // 3. SEED AUTHORS
     // ======================
-    console.log('\n✍️ Seeding authors...');
+    console.log("\n\u270D\uFE0F Seeding authors...");
     // Popular Indonesian authors (fixed for realism)
     const popularAuthors = [
-        { name: 'Andrea Hirata', bio: 'Penulis novel bestseller Laskar Pelangi', birthDate: new Date('1967-10-24') },
-        { name: 'Pramoedya Ananta Toer', bio: 'Sastrawan Indonesia terkemuka', birthDate: new Date('1925-02-06') },
-        { name: 'Tere Liye', bio: 'Penulis novel Indonesia kontemporer', birthDate: new Date('1979-05-21') },
-        { name: 'Dee Lestari', bio: 'Penulis dan penyanyi Indonesia', birthDate: new Date('1976-01-20') },
-        { name: 'Eka Kurniawan', bio: 'Penulis novel Cantik Itu Luka', birthDate: new Date('1975-11-28') },
+        { name: "Andrea Hirata", bio: "Penulis novel bestseller Laskar Pelangi", birthDate: new Date("1967-10-24") },
+        { name: "Pramoedya Ananta Toer", bio: "Sastrawan Indonesia terkemuka", birthDate: new Date("1925-02-06") },
+        { name: "Tere Liye", bio: "Penulis novel Indonesia kontemporer", birthDate: new Date("1979-05-21") },
+        { name: "Dee Lestari", bio: "Penulis dan penyanyi Indonesia", birthDate: new Date("1976-01-20") },
+        { name: "Eka Kurniawan", bio: "Penulis novel Cantik Itu Luka", birthDate: new Date("1975-11-28") },
     ];
     // Seed popular authors first
     for (const authorData of popularAuthors) {
@@ -165,20 +171,20 @@ async function seedData() {
     }
     // Seed random authors
     for (let i = popularAuthors.length; i < NUM_AUTHORS; i++) {
-        const author = await findOrCreateAuthor(faker.person.fullName(), faker.lorem.paragraph(), faker.date.birthdate({ min: 1900, max: 2000, mode: 'year' }));
+        const author = await findOrCreateAuthor(faker.person.fullName(), faker.lorem.paragraph(), faker.date.birthdate({ min: 1900, max: 2000, mode: "year" }));
         createdData.authors.push(author);
     }
     // ======================
     // 4. SEED BOOKS
     // ======================
-    console.log('\n📚 Seeding books...');
+    console.log("\n\uD83D\uDCDA Seeding books...");
     // Popular books (fixed for realism)
     const popularBooks = [
-        { title: 'Laskar Pelangi', isbn: '9789793062792', year: 2005, authorIndex: 0, categoryIndex: 0 },
-        { title: 'Bumi Manusia', isbn: '9789794166948', year: 1980, authorIndex: 1, categoryIndex: 5 },
-        { title: 'Harry Potter dan Batu Bertuah', isbn: '9786020382958', year: 2000, authorIndex: 2, categoryIndex: 0 },
-        { title: 'Supernova: Kesatria, Puteri, dan Bintang Jatuh', isbn: '9789792239844', year: 2001, authorIndex: 3, categoryIndex: 0 },
-        { title: 'Cantik Itu Luka', isbn: '9789793663527', year: 2002, authorIndex: 4, categoryIndex: 4 },
+        { title: "Laskar Pelangi", isbn: "9789793062792", year: 2005, authorIndex: 0, categoryIndex: 0 },
+        { title: "Bumi Manusia", isbn: "9789794166948", year: 1980, authorIndex: 1, categoryIndex: 5 },
+        { title: "Harry Potter dan Batu Bertuah", isbn: "9786020382958", year: 2000, authorIndex: 2, categoryIndex: 0 },
+        { title: "Supernova: Kesatria, Puteri, dan Bintang Jatuh", isbn: "9789792239844", year: 2001, authorIndex: 3, categoryIndex: 0 },
+        { title: "Cantik Itu Luka", isbn: "9789793663527", year: 2002, authorIndex: 4, categoryIndex: 4 },
     ];
     // Seed popular books first
     for (const bookData of popularBooks) {
@@ -190,7 +196,7 @@ async function seedData() {
                     description: faker.lorem.paragraphs({ min: 1, max: 2 }),
                     year: bookData.year,
                     stock: faker.number.int({ min: 5, max: 20 }),
-                    coverImage: '/public/uploads/default-book.jpg',
+                    coverImage: "/public/uploads/default-book.jpg",
                     authorId: createdData.authors[bookData.authorIndex].id,
                     categoryId: createdData.categories[bookData.categoryIndex].id,
                 },
@@ -213,7 +219,7 @@ async function seedData() {
                 description: faker.lorem.paragraphs({ min: 1, max: 3 }),
                 year: faker.number.int({ min: 1900, max: 2024 }),
                 stock: faker.number.int({ min: 1, max: 20 }),
-                coverImage: '/public/uploads/default-book.jpg',
+                coverImage: "/public/uploads/default-book.jpg",
                 authorId: faker.helpers.arrayElement(createdData.authors).id,
                 categoryId: faker.helpers.arrayElement(createdData.categories).id,
             },
@@ -223,22 +229,22 @@ async function seedData() {
     // ======================
     // 5. SEED TRANSACTIONS
     // ======================
-    console.log('\n💰 Seeding transactions...');
+    console.log("\n\uD83D\uDCB0 Seeding transactions...");
     // Create some active members for transactions
-    const activeMembers = createdData.membersData.filter(m => m.status === 'ACTIVE');
+    const activeMembers = createdData.membersData.filter(m => m.status === "ACTIVE");
     for (let i = 1; i <= NUM_TRANSACTIONS; i++) {
         const member = faker.helpers.arrayElement(activeMembers);
         const borrowDate = faker.date.past({ years: 1 });
         const dueDate = new Date(borrowDate);
         dueDate.setDate(dueDate.getDate() + 14);
         const status = faker.helpers.weightedArrayElement([
-            { value: 'BORROWED', weight: 0.3 },
-            { value: 'RETURNED', weight: 0.6 },
-            { value: 'OVERDUE', weight: 0.05 },
-            { value: 'CANCELLED', weight: 0.05 }
+            { value: "BORROWED", weight: 0.3 },
+            { value: "RETURNED", weight: 0.6 },
+            { value: "OVERDUE", weight: 0.05 },
+            { value: "CANCELLED", weight: 0.05 }
         ]);
         let returnDate = null;
-        if (status === 'RETURNED') {
+        if (status === "RETURNED") {
             returnDate = new Date(borrowDate);
             returnDate.setDate(returnDate.getDate() + faker.number.int({ min: 1, max: 14 }));
         }
@@ -271,7 +277,7 @@ async function seedData() {
         }
     }
     // Create some overdue transactions
-    console.log('\n⏰ Creating overdue transactions...');
+    console.log("\n\u23F0 Creating overdue transactions...");
     const overdueMembers = activeMembers.slice(0, 3);
     for (const member of overdueMembers) {
         const borrowDate = new Date();
@@ -283,7 +289,7 @@ async function seedData() {
             data: {
                 memberId: member.id,
                 dueDate,
-                status: 'BORROWED',
+                status: "BORROWED",
                 items: { create: [{ bookId: book.id, quantity: 1 }] },
             },
         });
@@ -303,24 +309,24 @@ async function main() {
         // ======================
         // DISPLAY TESTING INFO
         // ======================
-        console.log('\n' + '='.repeat(50));
-        console.log('🎉 DATABASE SEEDING COMPLETED!');
-        console.log('='.repeat(50));
-        console.log('\n🔐 TESTING CREDENTIALS:');
-        console.log('='.repeat(30));
-        console.log('\n👑 ADMIN ACCOUNTS:');
+        console.log("\n" + "=".repeat(50));
+        console.log("\uD83C\uDF89 DATABASE SEEDING COMPLETED!");
+        console.log("=".repeat(50));
+        console.log("\n\uD83D\uDD10 TESTING CREDENTIALS:");
+        console.log("=".repeat(30));
+        console.log("\n\uD83D\uDC51 ADMIN ACCOUNTS:");
         createdData.admins.forEach((admin, idx) => {
             console.log(`${idx + 1}. Email: ${admin.email}`);
             console.log(`   Password: ${TEST_CREDENTIALS.ADMIN.password}`);
             console.log(`   Username: ${admin.username}`);
         });
-        console.log('\n📚 LIBRARIAN ACCOUNTS:');
+        console.log("\n\uD83D\uDCDA LIBRARIAN ACCOUNTS:");
         createdData.librarians.forEach((librarian, idx) => {
             console.log(`${idx + 1}. Email: ${librarian.email}`);
             console.log(`   Password: ${TEST_CREDENTIALS.LIBRARIAN.password}`);
             console.log(`   Username: ${librarian.username}`);
         });
-        console.log('\n👥 MEMBER ACCOUNTS (First 5 for testing):');
+        console.log("\n\uD83D\uDC65 MEMBER ACCOUNTS (First 5 for testing):");
         createdData.members.slice(0, 5).forEach((member, idx) => {
             console.log(`${idx + 1}. Email: ${member.email}`);
             console.log(`   Password: ${TEST_CREDENTIALS.MEMBER.password}`);
@@ -329,8 +335,8 @@ async function main() {
         // ======================
         // DISPLAY SUMMARY
         // ======================
-        console.log('\n📊 SEEDING SUMMARY:');
-        console.log('='.repeat(30));
+        console.log("\n\uD83D\uDCCA SEEDING SUMMARY:");
+        console.log("=".repeat(30));
         console.log(`👤 Total Users: ${createdData.users.length}`);
         console.log(`   ├─ Admin: ${createdData.admins.length}`);
         console.log(`   ├─ Librarian: ${createdData.librarians.length}`);
@@ -344,17 +350,17 @@ async function main() {
         // ======================
         // TESTING INSTRUCTIONS
         // ======================
-        console.log('\n🚀 QUICK START FOR TESTING:');
-        console.log('='.repeat(30));
-        console.log('\n1. Login as Admin:');
+        console.log("\n\uD83D\uDE80 QUICK START FOR TESTING:");
+        console.log("=".repeat(30));
+        console.log("\n1. Login as Admin:");
         console.log(`   curl -X POST http://localhost:3000/api/auth/login \\`);
         console.log(`     -H "Content-Type: application/json" \\`);
         console.log(`     -d '{"email": "admin1@library.com", "password": "${TEST_CREDENTIALS.ADMIN.password}"}'`);
-        console.log('\n2. Get your token from response');
-        console.log('\n3. Test protected endpoint:');
+        console.log("\n2. Get your token from response");
+        console.log("\n3. Test protected endpoint:");
         console.log(`   curl -X GET http://localhost:3000/api/books/stats \\`);
         console.log(`     -H "Authorization: Bearer YOUR_TOKEN_HERE"`);
-        console.log('\n4. Or use Swagger UI:');
+        console.log("\n4. Or use Swagger UI:");
         console.log(`   Open: http://localhost:3000/api-docs`);
         console.log(`   Click "Authorize" button`);
         console.log(`   Enter: Bearer YOUR_TOKEN_HERE`);
@@ -394,15 +400,15 @@ async function main() {
                 stock: b.stock
             }))
         };
-        const filePath = path.join(__dirname, 'test-accounts.json');
+        const filePath = path.join(__dirname, "test-accounts.json");
         fs.writeFileSync(filePath, JSON.stringify(testData, null, 2));
         console.log(`\n💾 Test data saved to: ${filePath}`);
-        console.log('\n' + '='.repeat(50));
-        console.log('✅ Ready for testing! Happy coding! 🚀');
-        console.log('='.repeat(50));
+        console.log("\n" + "=".repeat(50));
+        console.log("\u2705 Ready for testing! Happy coding! \uD83D\uDE80");
+        console.log("=".repeat(50));
     }
     catch (error) {
-        console.error('\n❌ Error seeding database:', error);
+        console.error("\n\u274C Error seeding database:", error);
         process.exit(1);
     }
     finally {

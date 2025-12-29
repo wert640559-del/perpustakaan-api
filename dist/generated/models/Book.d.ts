@@ -1,5 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
-import type * as Prisma from "../internal/prismaNamespace";
+import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model Book
  *
@@ -175,7 +175,7 @@ export type BookAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     _max?: BookMaxAggregateInputType;
 };
 export type GetBookAggregateType<T extends BookAggregateArgs> = {
-    [P in keyof T & keyof AggregateBook]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateBook[P]> : Prisma.GetScalarType<T[P], AggregateBook[P]>;
+    [P in keyof T & keyof AggregateBook]: P extends "_count" | "count" ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateBook[P]> : Prisma.GetScalarType<T[P], AggregateBook[P]>;
 };
 export type BookGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.BookWhereInput;
@@ -209,8 +209,8 @@ export type BookGroupByOutputType = {
     _min: BookMinAggregateOutputType | null;
     _max: BookMaxAggregateOutputType | null;
 };
-type GetBookGroupByPayload<T extends BookGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<BookGroupByOutputType, T['by']> & {
-    [P in ((keyof T) & (keyof BookGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], BookGroupByOutputType[P]> : Prisma.GetScalarType<T[P], BookGroupByOutputType[P]>;
+type GetBookGroupByPayload<T extends BookGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<BookGroupByOutputType, T["by"]> & {
+    [P in ((keyof T) & (keyof BookGroupByOutputType))]: P extends "_count" ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], BookGroupByOutputType[P]> : Prisma.GetScalarType<T[P], BookGroupByOutputType[P]>;
 }>>;
 export type BookWhereInput = {
     AND?: Prisma.BookWhereInput | Prisma.BookWhereInput[];
@@ -993,14 +993,14 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     composites: {};
 };
 export type BookGetPayload<S extends boolean | null | undefined | BookDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$BookPayload, S>;
-export type BookCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<BookFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type BookCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<BookFindManyArgs, "select" | "include" | "distinct" | "omit"> & {
     select?: BookCountAggregateInputType | true;
 };
 export interface BookDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
     [K: symbol]: {
-        types: Prisma.TypeMap<ExtArgs>['model']['Book'];
+        types: Prisma.TypeMap<ExtArgs>["model"]["Book"];
         meta: {
-            name: 'Book';
+            name: "Book";
         };
     };
     /**
@@ -1243,7 +1243,7 @@ export interface BookDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
      *   }
      * })
     **/
-    count<T extends BookCountArgs>(args?: Prisma.Subset<T, BookCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], BookCountAggregateOutputType> : number>;
+    count<T extends BookCountArgs>(args?: Prisma.Subset<T, BookCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<"select", any> ? T["select"] extends true ? number : Prisma.GetScalarType<T["select"], BookCountAggregateOutputType> : number>;
     /**
      * Allows you to perform aggregations operations on a Book.
      * Note, that providing `undefined` is treated as the value not being there.
@@ -1287,22 +1287,22 @@ export interface BookDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
      * })
      *
     **/
-    groupBy<T extends BookGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
-        orderBy: BookGroupByArgs['orderBy'];
+    groupBy<T extends BookGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<"skip", Prisma.Keys<T>>, Prisma.Extends<"take", Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: BookGroupByArgs["orderBy"];
     } : {
-        orderBy?: BookGroupByArgs['orderBy'];
-    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        orderBy?: BookGroupByArgs["orderBy"];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T["orderBy"]>>>, ByFields extends Prisma.MaybeTupleToUnion<T["by"]>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T["having"]>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T["by"] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
         [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
             Error,
-            'Field ',
+            "Field ",
             P,
             ` in "having" needs to be provided in "by"`
         ];
-    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+    }[HavingFields] : "take" extends Prisma.Keys<T> ? "orderBy" extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
-    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+    }[OrderFields] : "Error: If you provide \"take\", you also need to provide \"orderBy\"" : "skip" extends Prisma.Keys<T> ? "orderBy" extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
-    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+    }[OrderFields] : "Error: If you provide \"skip\", you also need to provide \"orderBy\"" : ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
     }[OrderFields]>(args: Prisma.SubsetIntersection<T, BookGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBookGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
     /**
@@ -1346,18 +1346,18 @@ export interface Prisma__BookClient<T, Null = never, ExtArgs extends runtime.Typ
  * Fields of the Book model
  */
 export interface BookFieldRefs {
-    readonly id: Prisma.FieldRef<"Book", 'String'>;
-    readonly title: Prisma.FieldRef<"Book", 'String'>;
-    readonly isbn: Prisma.FieldRef<"Book", 'String'>;
-    readonly description: Prisma.FieldRef<"Book", 'String'>;
-    readonly year: Prisma.FieldRef<"Book", 'Int'>;
-    readonly stock: Prisma.FieldRef<"Book", 'Int'>;
-    readonly coverImage: Prisma.FieldRef<"Book", 'String'>;
-    readonly authorId: Prisma.FieldRef<"Book", 'String'>;
-    readonly categoryId: Prisma.FieldRef<"Book", 'String'>;
-    readonly createdAt: Prisma.FieldRef<"Book", 'DateTime'>;
-    readonly updatedAt: Prisma.FieldRef<"Book", 'DateTime'>;
-    readonly deletedAt: Prisma.FieldRef<"Book", 'DateTime'>;
+    readonly id: Prisma.FieldRef<"Book", "String">;
+    readonly title: Prisma.FieldRef<"Book", "String">;
+    readonly isbn: Prisma.FieldRef<"Book", "String">;
+    readonly description: Prisma.FieldRef<"Book", "String">;
+    readonly year: Prisma.FieldRef<"Book", "Int">;
+    readonly stock: Prisma.FieldRef<"Book", "Int">;
+    readonly coverImage: Prisma.FieldRef<"Book", "String">;
+    readonly authorId: Prisma.FieldRef<"Book", "String">;
+    readonly categoryId: Prisma.FieldRef<"Book", "String">;
+    readonly createdAt: Prisma.FieldRef<"Book", "DateTime">;
+    readonly updatedAt: Prisma.FieldRef<"Book", "DateTime">;
+    readonly deletedAt: Prisma.FieldRef<"Book", "DateTime">;
 }
 /**
  * Book findUnique

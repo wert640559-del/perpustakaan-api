@@ -1,4 +1,4 @@
-import { successResponse } from "../utils/response";
+import { successResponse } from "../utils/response.js";
 export class CategoryController {
     categoryService;
     constructor(categoryService) {
@@ -18,7 +18,7 @@ export class CategoryController {
             name: req.query.name
         };
         const sortBy = req.query.sortBy;
-        const sortOrder = req.query.sortOrder || 'desc';
+        const sortOrder = req.query.sortOrder || "desc";
         const result = await this.categoryService.list({
             page,
             limit,

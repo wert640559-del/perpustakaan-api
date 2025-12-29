@@ -1,6 +1,6 @@
-import 'dotenv/config';
-import app from "./app";
-import config from './utils/env';
+import "dotenv/config";
+import app from "./app.js";
+import config from "./utils/env.js";
 app.listen(config.PORT, () => {
     console.log(`Server running at ${config.HOST}:${config.PORT}`);
 });

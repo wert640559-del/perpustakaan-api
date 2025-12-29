@@ -1,4 +1,4 @@
-import type { Prisma } from "../generated/client";
+import type { Prisma } from "../generated/client.js";
 export declare function findBookStock(bookId: number): Promise<any>;
 export declare function createBorrow(tx: Prisma.TransactionClient, userId: number): Promise<any>;
 export declare function createBorrowItem(tx: Prisma.TransactionClient, borrowId: number, bookId: number, quantity: number): Promise<any>;

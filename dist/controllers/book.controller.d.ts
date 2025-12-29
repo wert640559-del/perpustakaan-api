@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { IBookService } from "../services/book.service";
+import type { IBookService } from "../services/book.service.js";
 export interface IBookController {
     list(req: Request, res: Response): Promise<void>;
     getById(req: Request, res: Response): Promise<void>;

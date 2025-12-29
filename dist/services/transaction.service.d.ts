@@ -1,13 +1,13 @@
-import type { Prisma, Transaction, TransactionItem } from "../generated/client";
-import type { ITransactionRepository } from "../repositories/transaction.repository";
-import type { IBookRepository } from "../repositories/book.repository";
+import type { Prisma, Transaction, TransactionItem } from "../generated/client.js";
+import type { ITransactionRepository } from "../repositories/transaction.repository.js";
+import type { IBookRepository } from "../repositories/book.repository.js";
 interface FindAllParams {
     page: number;
     limit: number;
     memberId?: string;
     status?: "BORROWED" | "RETURNED" | "OVERDUE" | "CANCELLED";
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 interface TransactionListResponse {
     transactions: Transaction[];

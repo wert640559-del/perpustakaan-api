@@ -1,4 +1,4 @@
-import { successResponse } from "../utils/response";
+import { successResponse } from "../utils/response.js";
 export class AuthorController {
     authorService;
     constructor(authorService) {
@@ -17,7 +17,7 @@ export class AuthorController {
             name: req.query.name
         };
         const sortBy = req.query.sortBy;
-        const sortOrder = req.query.sortOrder || 'desc';
+        const sortOrder = req.query.sortOrder || "desc";
         const result = await this.authorService.list({
             page,
             limit,

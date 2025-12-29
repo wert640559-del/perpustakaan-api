@@ -1,4 +1,4 @@
-import type { Member, Prisma, PrismaClient, User } from "../generated/client";
+import type { Member, Prisma, PrismaClient, User } from "../generated/client.js";
 export interface IMemberRepository {
     list(skip: number, take: number, where: Prisma.MemberWhereInput, orderBy: Prisma.MemberOrderByWithRelationInput): Promise<Member[]>;
     countAll(where: Prisma.MemberWhereInput): Promise<number>;

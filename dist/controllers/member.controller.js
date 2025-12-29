@@ -1,4 +1,4 @@
-import { successResponse } from "../utils/response";
+import { successResponse } from "../utils/response.js";
 export class MemberController {
     memberService;
     constructor(memberService) {
@@ -18,7 +18,7 @@ export class MemberController {
         const searchEmail = req.query.email;
         const searchStatus = req.query.status;
         const sortBy = req.query.sortBy;
-        const sortOrder = req.query.sortOrder || 'desc';
+        const sortOrder = req.query.sortOrder || "desc";
         const result = await this.memberService.list({
             page,
             limit,

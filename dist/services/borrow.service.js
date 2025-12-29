@@ -1,4 +1,4 @@
-import * as borrowRepo from "../repositories/borrow.repository";
+import * as borrowRepo from "../repositories/borrow.repository.js";
 export const borrow = async (userId, payload) => {
     const items = payload.data;
     if (!items || items.length === 0) {

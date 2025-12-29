@@ -1,4 +1,4 @@
-import type { Category } from "../generated/client";
+import type { Category } from "../generated/client.js";
 interface FindAllParams {
     page: number;
     limit: number;
@@ -6,7 +6,7 @@ interface FindAllParams {
         name?: string;
     };
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 interface CategoryListResponse {
     categories: Category[];

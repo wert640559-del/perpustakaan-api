@@ -1,4 +1,4 @@
-import { successResponse } from "../utils/response";
+import { successResponse } from "../utils/response.js";
 export class BookController {
     bookService;
     constructor(bookService) {
@@ -21,7 +21,7 @@ export class BookController {
             categoryId: req.query.categoryId,
         };
         const sortBy = req.query.sortBy;
-        const sortOrder = req.query.sortOrder || 'desc';
+        const sortOrder = req.query.sortOrder || "desc";
         const result = await this.bookService.list({
             page,
             limit,

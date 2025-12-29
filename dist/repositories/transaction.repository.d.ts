@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient, Transaction, TransactionItem } from "../generated/client";
+import type { Prisma, PrismaClient, Transaction, TransactionItem } from "../generated/client.js";
 export interface ITransactionRepository {
     list(skip: number, take: number, where: Prisma.TransactionWhereInput, orderBy: Prisma.TransactionOrderByWithRelationInput): Promise<Transaction[]>;
     countAll(where: Prisma.TransactionWhereInput): Promise<number>;

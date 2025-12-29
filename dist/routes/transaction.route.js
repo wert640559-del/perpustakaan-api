@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { borrowValidation, returnValidation, getByIdValidation, getAllValidation } from "../middlewares/transaction.validation";
-import { TransactionController } from "../controllers/transaction.controller";
-import { validate } from "../utils/validator";
-import { authenticate } from "../middlewares/auth.middleware";
-import { TransactionRepository } from "../repositories/transaction.repository";
-import { BookRepository } from "../repositories/book.repository";
-import prismaInstance from "../database";
-import { TransactionService } from "../services/transaction.service";
+import { borrowValidation, returnValidation, getByIdValidation, getAllValidation } from "../middlewares/transaction.validation.js";
+import { TransactionController } from "../controllers/transaction.controller.js";
+import { validate } from "../utils/validator.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { TransactionRepository } from "../repositories/transaction.repository.js";
+import { BookRepository } from "../repositories/book.repository.js";
+import prismaInstance from "../database.js";
+import { TransactionService } from "../services/transaction.service.js";
 const router = Router();
 /**
  * @swagger
@@ -312,10 +312,10 @@ const bookRepo = new BookRepository(prismaInstance);
 const service = new TransactionService(transactionRepo, bookRepo);
 const controller = new TransactionController(service);
 // --- Route Definitions ---
-router.get('/', authenticate, validate(getAllValidation), controller.list);
-router.get('/stats', authenticate, controller.getStats);
-router.get('/:id', authenticate, validate(getByIdValidation), controller.getById);
-router.post('/', authenticate, validate(borrowValidation), controller.create);
-router.patch('/return/:id', authenticate, validate(returnValidation), controller.returnBooks);
+router.get("/", authenticate, validate(getAllValidation), controller.list);
+router.get("/stats", authenticate, controller.getStats);
+router.get("/:id", authenticate, validate(getByIdValidation), controller.getById);
+router.post("/", authenticate, validate(borrowValidation), controller.create);
+router.patch("/return/:id", authenticate, validate(returnValidation), controller.returnBooks);
 export default router;
 //# sourceMappingURL=transaction.route.js.map

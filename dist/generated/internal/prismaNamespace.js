@@ -14,7 +14,7 @@
  * model files in the `model` directory!
  */
 import * as runtime from "@prisma/client/runtime/client";
-import {} from "./class";
+import {} from "./class.js";
 /**
  * Prisma Errors
  */
@@ -68,102 +68,102 @@ export const JsonNull = runtime.JsonNull;
  */
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
-    Book: 'Book',
-    Author: 'Author',
-    User: 'User',
-    Member: 'Member',
-    Category: 'Category',
-    Transaction: 'Transaction',
-    TransactionItem: 'TransactionItem'
+    Book: "Book",
+    Author: "Author",
+    User: "User",
+    Member: "Member",
+    Category: "Category",
+    Transaction: "Transaction",
+    TransactionItem: "TransactionItem"
 };
 /**
  * Enums
  */
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
-    Serializable: 'Serializable'
+    ReadUncommitted: "ReadUncommitted",
+    ReadCommitted: "ReadCommitted",
+    RepeatableRead: "RepeatableRead",
+    Serializable: "Serializable"
 });
 export const BookScalarFieldEnum = {
-    id: 'id',
-    title: 'title',
-    isbn: 'isbn',
-    description: 'description',
-    year: 'year',
-    stock: 'stock',
-    coverImage: 'coverImage',
-    authorId: 'authorId',
-    categoryId: 'categoryId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    id: "id",
+    title: "title",
+    isbn: "isbn",
+    description: "description",
+    year: "year",
+    stock: "stock",
+    coverImage: "coverImage",
+    authorId: "authorId",
+    categoryId: "categoryId",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt",
+    deletedAt: "deletedAt"
 };
 export const AuthorScalarFieldEnum = {
-    id: 'id',
-    name: 'name',
-    bio: 'bio',
-    birthDate: 'birthDate',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    id: "id",
+    name: "name",
+    bio: "bio",
+    birthDate: "birthDate",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt"
 };
 export const UserScalarFieldEnum = {
-    id: 'id',
-    username: 'username',
-    name: 'name',
-    email: 'email',
-    password: 'password',
-    role: 'role',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    id: "id",
+    username: "username",
+    name: "name",
+    email: "email",
+    password: "password",
+    role: "role",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt"
 };
 export const MemberScalarFieldEnum = {
-    id: 'id',
-    kodeMember: 'kodeMember',
-    nama: 'nama',
-    email: 'email',
-    telepon: 'telepon',
-    alamat: 'alamat',
-    tanggal_daftar: 'tanggal_daftar',
-    status: 'status',
-    userId: 'userId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    id: "id",
+    kodeMember: "kodeMember",
+    nama: "nama",
+    email: "email",
+    telepon: "telepon",
+    alamat: "alamat",
+    tanggal_daftar: "tanggal_daftar",
+    status: "status",
+    userId: "userId",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt"
 };
 export const CategoryScalarFieldEnum = {
-    id: 'id',
-    name: 'name',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    id: "id",
+    name: "name",
+    description: "description",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt"
 };
 export const TransactionScalarFieldEnum = {
-    id: 'id',
-    memberId: 'memberId',
-    borrowDate: 'borrowDate',
-    dueDate: 'dueDate',
-    returnDate: 'returnDate',
-    status: 'status',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    id: "id",
+    memberId: "memberId",
+    borrowDate: "borrowDate",
+    dueDate: "dueDate",
+    returnDate: "returnDate",
+    status: "status",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt"
 };
 export const TransactionItemScalarFieldEnum = {
-    id: 'id',
-    transactionId: 'transactionId',
-    bookId: 'bookId',
-    quantity: 'quantity'
+    id: "id",
+    transactionId: "transactionId",
+    bookId: "bookId",
+    quantity: "quantity"
 };
 export const SortOrder = {
-    asc: 'asc',
-    desc: 'desc'
+    asc: "asc",
+    desc: "desc"
 };
 export const QueryMode = {
-    default: 'default',
-    insensitive: 'insensitive'
+    default: "default",
+    insensitive: "insensitive"
 };
 export const NullsOrder = {
-    first: 'first',
-    last: 'last'
+    first: "first",
+    last: "last"
 };
 export const defineExtension = runtime.Extensions.defineExtension;
 //# sourceMappingURL=prismaNamespace.js.map

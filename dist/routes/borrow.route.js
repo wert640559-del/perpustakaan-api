@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { checkout, getAll, getById, remove, updateStatus } from "../controllers/borrow.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+import { checkout, getAll, getById, remove, updateStatus } from "../controllers/borrow.controller.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
 const router = Router();
 router.post("/checkout", authenticate, checkout);
 router.get("/", authenticate, getAll);

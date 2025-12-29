@@ -1,5 +1,5 @@
-import type { Prisma, Book } from "../generated/client";
-import type { IBookRepository } from "../repositories/book.repository";
+import type { Prisma, Book } from "../generated/client.js";
+import type { IBookRepository } from "../repositories/book.repository.js";
 interface FindAllBooksParams {
     page: number;
     limit: number;
@@ -9,7 +9,7 @@ interface FindAllBooksParams {
         categoryId?: string;
     };
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 interface BookListResponse {
     books: Book[];

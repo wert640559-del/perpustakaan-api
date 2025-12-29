@@ -1,5 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
-import type * as Prisma from "../internal/prismaNamespace";
+import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model TransactionItem
  *
@@ -123,7 +123,7 @@ export type TransactionItemAggregateArgs<ExtArgs extends runtime.Types.Extension
     _max?: TransactionItemMaxAggregateInputType;
 };
 export type GetTransactionItemAggregateType<T extends TransactionItemAggregateArgs> = {
-    [P in keyof T & keyof AggregateTransactionItem]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateTransactionItem[P]> : Prisma.GetScalarType<T[P], AggregateTransactionItem[P]>;
+    [P in keyof T & keyof AggregateTransactionItem]: P extends "_count" | "count" ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateTransactionItem[P]> : Prisma.GetScalarType<T[P], AggregateTransactionItem[P]>;
 };
 export type TransactionItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.TransactionItemWhereInput;
@@ -149,8 +149,8 @@ export type TransactionItemGroupByOutputType = {
     _min: TransactionItemMinAggregateOutputType | null;
     _max: TransactionItemMaxAggregateOutputType | null;
 };
-type GetTransactionItemGroupByPayload<T extends TransactionItemGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<TransactionItemGroupByOutputType, T['by']> & {
-    [P in ((keyof T) & (keyof TransactionItemGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], TransactionItemGroupByOutputType[P]> : Prisma.GetScalarType<T[P], TransactionItemGroupByOutputType[P]>;
+type GetTransactionItemGroupByPayload<T extends TransactionItemGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<TransactionItemGroupByOutputType, T["by"]> & {
+    [P in ((keyof T) & (keyof TransactionItemGroupByOutputType))]: P extends "_count" ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], TransactionItemGroupByOutputType[P]> : Prisma.GetScalarType<T[P], TransactionItemGroupByOutputType[P]>;
 }>>;
 export type TransactionItemWhereInput = {
     AND?: Prisma.TransactionItemWhereInput | Prisma.TransactionItemWhereInput[];
@@ -519,14 +519,14 @@ export type $TransactionItemPayload<ExtArgs extends runtime.Types.Extensions.Int
     composites: {};
 };
 export type TransactionItemGetPayload<S extends boolean | null | undefined | TransactionItemDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$TransactionItemPayload, S>;
-export type TransactionItemCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<TransactionItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type TransactionItemCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<TransactionItemFindManyArgs, "select" | "include" | "distinct" | "omit"> & {
     select?: TransactionItemCountAggregateInputType | true;
 };
 export interface TransactionItemDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
     [K: symbol]: {
-        types: Prisma.TypeMap<ExtArgs>['model']['TransactionItem'];
+        types: Prisma.TypeMap<ExtArgs>["model"]["TransactionItem"];
         meta: {
-            name: 'TransactionItem';
+            name: "TransactionItem";
         };
     };
     /**
@@ -769,7 +769,7 @@ export interface TransactionItemDelegate<ExtArgs extends runtime.Types.Extension
      *   }
      * })
     **/
-    count<T extends TransactionItemCountArgs>(args?: Prisma.Subset<T, TransactionItemCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], TransactionItemCountAggregateOutputType> : number>;
+    count<T extends TransactionItemCountArgs>(args?: Prisma.Subset<T, TransactionItemCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<"select", any> ? T["select"] extends true ? number : Prisma.GetScalarType<T["select"], TransactionItemCountAggregateOutputType> : number>;
     /**
      * Allows you to perform aggregations operations on a TransactionItem.
      * Note, that providing `undefined` is treated as the value not being there.
@@ -813,22 +813,22 @@ export interface TransactionItemDelegate<ExtArgs extends runtime.Types.Extension
      * })
      *
     **/
-    groupBy<T extends TransactionItemGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
-        orderBy: TransactionItemGroupByArgs['orderBy'];
+    groupBy<T extends TransactionItemGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<"skip", Prisma.Keys<T>>, Prisma.Extends<"take", Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: TransactionItemGroupByArgs["orderBy"];
     } : {
-        orderBy?: TransactionItemGroupByArgs['orderBy'];
-    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        orderBy?: TransactionItemGroupByArgs["orderBy"];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T["orderBy"]>>>, ByFields extends Prisma.MaybeTupleToUnion<T["by"]>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T["having"]>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T["by"] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
         [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
             Error,
-            'Field ',
+            "Field ",
             P,
             ` in "having" needs to be provided in "by"`
         ];
-    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+    }[HavingFields] : "take" extends Prisma.Keys<T> ? "orderBy" extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
-    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+    }[OrderFields] : "Error: If you provide \"take\", you also need to provide \"orderBy\"" : "skip" extends Prisma.Keys<T> ? "orderBy" extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
-    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+    }[OrderFields] : "Error: If you provide \"skip\", you also need to provide \"orderBy\"" : ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
     }[OrderFields]>(args: Prisma.SubsetIntersection<T, TransactionItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransactionItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
     /**
@@ -871,10 +871,10 @@ export interface Prisma__TransactionItemClient<T, Null = never, ExtArgs extends 
  * Fields of the TransactionItem model
  */
 export interface TransactionItemFieldRefs {
-    readonly id: Prisma.FieldRef<"TransactionItem", 'String'>;
-    readonly transactionId: Prisma.FieldRef<"TransactionItem", 'String'>;
-    readonly bookId: Prisma.FieldRef<"TransactionItem", 'String'>;
-    readonly quantity: Prisma.FieldRef<"TransactionItem", 'Int'>;
+    readonly id: Prisma.FieldRef<"TransactionItem", "String">;
+    readonly transactionId: Prisma.FieldRef<"TransactionItem", "String">;
+    readonly bookId: Prisma.FieldRef<"TransactionItem", "String">;
+    readonly quantity: Prisma.FieldRef<"TransactionItem", "Int">;
 }
 /**
  * TransactionItem findUnique

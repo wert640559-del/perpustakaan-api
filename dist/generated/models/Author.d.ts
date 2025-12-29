@@ -1,5 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
-import type * as Prisma from "../internal/prismaNamespace";
+import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model Author
  *
@@ -109,7 +109,7 @@ export type AuthorAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
     _max?: AuthorMaxAggregateInputType;
 };
 export type GetAuthorAggregateType<T extends AuthorAggregateArgs> = {
-    [P in keyof T & keyof AggregateAuthor]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateAuthor[P]> : Prisma.GetScalarType<T[P], AggregateAuthor[P]>;
+    [P in keyof T & keyof AggregateAuthor]: P extends "_count" | "count" ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateAuthor[P]> : Prisma.GetScalarType<T[P], AggregateAuthor[P]>;
 };
 export type AuthorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.AuthorWhereInput;
@@ -133,8 +133,8 @@ export type AuthorGroupByOutputType = {
     _min: AuthorMinAggregateOutputType | null;
     _max: AuthorMaxAggregateOutputType | null;
 };
-type GetAuthorGroupByPayload<T extends AuthorGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<AuthorGroupByOutputType, T['by']> & {
-    [P in ((keyof T) & (keyof AuthorGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], AuthorGroupByOutputType[P]> : Prisma.GetScalarType<T[P], AuthorGroupByOutputType[P]>;
+type GetAuthorGroupByPayload<T extends AuthorGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<AuthorGroupByOutputType, T["by"]> & {
+    [P in ((keyof T) & (keyof AuthorGroupByOutputType))]: P extends "_count" ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], AuthorGroupByOutputType[P]> : Prisma.GetScalarType<T[P], AuthorGroupByOutputType[P]>;
 }>>;
 export type AuthorWhereInput = {
     AND?: Prisma.AuthorWhereInput | Prisma.AuthorWhereInput[];
@@ -417,14 +417,14 @@ export type $AuthorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     composites: {};
 };
 export type AuthorGetPayload<S extends boolean | null | undefined | AuthorDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$AuthorPayload, S>;
-export type AuthorCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<AuthorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type AuthorCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<AuthorFindManyArgs, "select" | "include" | "distinct" | "omit"> & {
     select?: AuthorCountAggregateInputType | true;
 };
 export interface AuthorDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
     [K: symbol]: {
-        types: Prisma.TypeMap<ExtArgs>['model']['Author'];
+        types: Prisma.TypeMap<ExtArgs>["model"]["Author"];
         meta: {
-            name: 'Author';
+            name: "Author";
         };
     };
     /**
@@ -667,7 +667,7 @@ export interface AuthorDelegate<ExtArgs extends runtime.Types.Extensions.Interna
      *   }
      * })
     **/
-    count<T extends AuthorCountArgs>(args?: Prisma.Subset<T, AuthorCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], AuthorCountAggregateOutputType> : number>;
+    count<T extends AuthorCountArgs>(args?: Prisma.Subset<T, AuthorCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<"select", any> ? T["select"] extends true ? number : Prisma.GetScalarType<T["select"], AuthorCountAggregateOutputType> : number>;
     /**
      * Allows you to perform aggregations operations on a Author.
      * Note, that providing `undefined` is treated as the value not being there.
@@ -711,22 +711,22 @@ export interface AuthorDelegate<ExtArgs extends runtime.Types.Extensions.Interna
      * })
      *
     **/
-    groupBy<T extends AuthorGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
-        orderBy: AuthorGroupByArgs['orderBy'];
+    groupBy<T extends AuthorGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<"skip", Prisma.Keys<T>>, Prisma.Extends<"take", Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: AuthorGroupByArgs["orderBy"];
     } : {
-        orderBy?: AuthorGroupByArgs['orderBy'];
-    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        orderBy?: AuthorGroupByArgs["orderBy"];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T["orderBy"]>>>, ByFields extends Prisma.MaybeTupleToUnion<T["by"]>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T["having"]>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T["by"] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
         [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
             Error,
-            'Field ',
+            "Field ",
             P,
             ` in "having" needs to be provided in "by"`
         ];
-    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+    }[HavingFields] : "take" extends Prisma.Keys<T> ? "orderBy" extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
-    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+    }[OrderFields] : "Error: If you provide \"take\", you also need to provide \"orderBy\"" : "skip" extends Prisma.Keys<T> ? "orderBy" extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
-    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+    }[OrderFields] : "Error: If you provide \"skip\", you also need to provide \"orderBy\"" : ByValid extends Prisma.True ? {} : {
         [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
     }[OrderFields]>(args: Prisma.SubsetIntersection<T, AuthorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuthorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
     /**
@@ -768,12 +768,12 @@ export interface Prisma__AuthorClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Author model
  */
 export interface AuthorFieldRefs {
-    readonly id: Prisma.FieldRef<"Author", 'String'>;
-    readonly name: Prisma.FieldRef<"Author", 'String'>;
-    readonly bio: Prisma.FieldRef<"Author", 'String'>;
-    readonly birthDate: Prisma.FieldRef<"Author", 'DateTime'>;
-    readonly createdAt: Prisma.FieldRef<"Author", 'DateTime'>;
-    readonly updatedAt: Prisma.FieldRef<"Author", 'DateTime'>;
+    readonly id: Prisma.FieldRef<"Author", "String">;
+    readonly name: Prisma.FieldRef<"Author", "String">;
+    readonly bio: Prisma.FieldRef<"Author", "String">;
+    readonly birthDate: Prisma.FieldRef<"Author", "DateTime">;
+    readonly createdAt: Prisma.FieldRef<"Author", "DateTime">;
+    readonly updatedAt: Prisma.FieldRef<"Author", "DateTime">;
 }
 /**
  * Author findUnique

@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { createMemberValidation, getMemberByIdValidation, validate } from "../middlewares/member.validation";
-import { MemberController } from "../controllers/member.controller";
-import { authenticate } from "../middlewares/auth.middleware";
-import { MemberRepository } from "../repositories/member.repository";
-import prismaInstance from "../database";
-import { MemberService } from "../services/member.service";
+import { createMemberValidation, getMemberByIdValidation, validate } from "../middlewares/member.validation.js";
+import { MemberController } from "../controllers/member.controller.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { MemberRepository } from "../repositories/member.repository.js";
+import prismaInstance from "../database.js";
+import { MemberService } from "../services/member.service.js";
 const router = Router();
 /**
  * @swagger
@@ -364,11 +364,11 @@ const repo = new MemberRepository(prismaInstance);
 const service = new MemberService(repo);
 const controller = new MemberController(service);
 // --- Route Definitions ---
-router.get('/', authenticate, controller.list);
-router.get('/stats', authenticate, controller.getStats);
-router.get('/:id', authenticate, validate(getMemberByIdValidation), controller.getById);
-router.post('/', authenticate, validate(createMemberValidation), controller.create);
-router.put('/:id', authenticate, validate(getMemberByIdValidation), controller.update);
-router.delete('/:id', authenticate, validate(getMemberByIdValidation), controller.remove);
+router.get("/", authenticate, controller.list);
+router.get("/stats", authenticate, controller.getStats);
+router.get("/:id", authenticate, validate(getMemberByIdValidation), controller.getById);
+router.post("/", authenticate, validate(createMemberValidation), controller.create);
+router.put("/:id", authenticate, validate(getMemberByIdValidation), controller.update);
+router.delete("/:id", authenticate, validate(getMemberByIdValidation), controller.remove);
 export default router;
 //# sourceMappingURL=member.route.js.map

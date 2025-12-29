@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { AuthorController } from "../controllers/author.controller";
-import { AuthorService } from "../services/author.service";
-import { AuthorRepository } from "../repositories/author.repository";
-import { createAuthorValidation, updateAuthorValidation, getAuthorByIdValidation, searchAuthorValidation } from "../middlewares/author.validation";
-import { validate } from "../utils/validator";
-import { authenticate } from "../middlewares/auth.middleware";
-import prismaInstance from "../database";
+import { AuthorController } from "../controllers/author.controller.js";
+import { AuthorService } from "../services/author.service.js";
+import { AuthorRepository } from "../repositories/author.repository.js";
+import { createAuthorValidation, updateAuthorValidation, getAuthorByIdValidation, searchAuthorValidation } from "../middlewares/author.validation.js";
+import { validate } from "../utils/validator.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import prismaInstance from "../database.js";
 const router = Router();
 /**
  * @swagger

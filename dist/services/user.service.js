@@ -1,6 +1,6 @@
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Import default, bukan * as
-import config from "../utils/env"; // Gunakan config dari env
+import config from "../utils/env.js"; // Gunakan config dari env
 export class AuthService {
     userRepo;
     constructor(userRepo) {
@@ -46,7 +46,7 @@ export class AuthService {
             role: user.role,
             name: user.name,
             email: user.email
-        }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRES_IN || '1d' });
+        }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRES_IN || "1d" });
         const { password, ...userWithoutPassword } = user;
         return {
             user: userWithoutPassword,

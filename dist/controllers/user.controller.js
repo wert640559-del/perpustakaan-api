@@ -1,5 +1,5 @@
-import { successResponse } from "../utils/response";
-import { UserRole } from "../generated/enums";
+import { successResponse } from "../utils/response.js";
+import { UserRole } from "../generated/enums.js";
 export class AuthController {
     authService;
     constructor(authService) {

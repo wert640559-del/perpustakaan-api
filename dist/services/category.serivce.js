@@ -1,4 +1,4 @@
-import * as categoryRepo from "../repositories/category.repository";
+import * as categoryRepo from "../repositories/category.repository.js";
 export const getAllCategories = async (params) => {
     const { page, limit, search, sortBy, sortOrder } = params;
     const skip = (page - 1) * limit;
@@ -6,12 +6,12 @@ export const getAllCategories = async (params) => {
     if (search?.name) {
         whereClause.name = {
             contains: search.name,
-            mode: 'insensitive'
+            mode: "insensitive"
         };
     }
     const sortCriteria = sortBy
-        ? { [sortBy]: sortOrder || 'desc' }
-        : { createdAt: 'desc' };
+        ? { [sortBy]: sortOrder || "desc" }
+        : { createdAt: "desc" };
     const categories = await categoryRepo.list(skip, limit, whereClause, sortCriteria);
     const total = await categoryRepo.countAll(whereClause);
     return {

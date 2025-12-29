@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { IAuthorService } from "../services/author.service";
+import type { IAuthorService } from "../services/author.service.js";
 export interface IAuthorController {
     list(req: Request, res: Response): Promise<void>;
     getById(req: Request, res: Response): Promise<void>;

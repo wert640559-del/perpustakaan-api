@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userRepo from '../repositories/user.repository';
-import * as memberRepo from '../repositories/member.repository';
+import * as userRepo from "../repositories/user.repository.js";
+import * as memberRepo from "../repositories/member.repository.js";
 const JWT_SECRET = process.env.JWT_SECRET || "library_secret_key";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 export const register = async (data) => {

@@ -1,5 +1,5 @@
-import type { Author, Prisma, Book } from "../generated/client";
-import type { IAuthorRepository } from "../repositories/author.repository";
+import type { Author, Prisma, Book } from "../generated/client.js";
+import type { IAuthorRepository } from "../repositories/author.repository.js";
 interface FindAllAuthorsParams {
     page: number;
     limit: number;
@@ -7,7 +7,7 @@ interface FindAllAuthorsParams {
         name?: string;
     };
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 interface AuthorListResponse {
     authors: Author[];

@@ -1,5 +1,5 @@
-import { successResponse } from "../utils/response";
-import { register, login, getProfile } from "../services/auth.service";
+import { successResponse } from "../utils/response.js";
+import { register, login, getProfile } from "../services/auth.service.js";
 export const registerUser = async (req, res) => {
     const { username, email, password, name, role } = req.body;
     // Validasi input
